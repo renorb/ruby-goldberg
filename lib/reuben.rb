@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'digest/md5'
 require 'erb'
 require 'json'
 
@@ -34,18 +35,19 @@ module Rack
     end
 
     post "/rubeme" do # register a rube client
-      name   = params["name"]
-      desc   = params["desc"]
-      url   = params["url"]
+      name = params["name"]
+      desc = params["desc"]
+      url  = params["url"]
+      md5  = Digest::MD5.hexdigest(url)
 
-      @cache.set "#{name}_name", name
-      @cache.set "#{name}_desc", desc
-      @cache.set "#{name}_url", url
+      @cache.set "#{md5}_name", name
+      @cache.set "#{md5}_desc", desc
+      @cache.set "#{md5}_url", url
 
       keys = JSON.parse(@cache.get("keys"))
-      keys << name
+      keys << md5
       @cache.set "keys", keys.to_json
-      "registered name:#{name} url:#{url} desc:#{desc}"
+      "registered name:#{name} key:#{md5} url:#{url} desc:#{desc}"
     end
 
     get "/rubes" do # get list of registered rube's
