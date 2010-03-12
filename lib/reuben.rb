@@ -19,9 +19,7 @@ module Rack
         @cache = store.new
       end
 
-      key = @cache.get "keys" # see if keys array is set
-
-      unless key
+      unless @cache.get "keys"
         @cache.set "keys", [] # reset key array to empty array
       end
     end
