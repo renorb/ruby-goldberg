@@ -17,6 +17,11 @@ class TestReuben < Test::Unit::TestCase
     assert last_response.ok?
   end
 
+  def test_returns_the_reuben_index
+    get "/"
+    assert_match /Reuben/, last_response.body
+  end
+  
   def test_rubeme_url_refuses_get
     get"/rubeme"
     assert !last_response.ok?

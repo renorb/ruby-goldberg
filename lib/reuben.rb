@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'erb'
 require 'memcached'
 
 module Rack
@@ -9,7 +10,7 @@ module Rack
     end
     
     get "/" do # not sure what root should return
-      "Nothing Here"
+      erb :index
     end
     
     post "/rubeme" do # register a rube client
