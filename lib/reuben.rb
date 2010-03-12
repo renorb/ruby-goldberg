@@ -1,12 +1,24 @@
 require 'sinatra/base'
 require 'erb'
-require 'memcached'
 
 module Rack
   class Reuben < Sinatra::Base
 
-    def initialize
-      @cache = Memcached.new("localhost:11211") # setup memcached connection
+    # ==== Parameters
+    # store: Class name which will be instantiated with +store_config+
+    #        passed to the initializer. Defaults to Memcached
+    #
+    # store_config: Parameters passed to +store+'s
+    #               initializer. Defaults to 'localhost:11211'
+    #
+    def initialize(store = nil, store_config = "localhost:11211")
+      unless store
+        require 'memcached'
+        store = Memcached
+      end
+
+      @cache = store.new(store_config) # setup key-value store connection
+
       begin
         @cache.get "keys" # see if keys array is set
       rescue Memcached::NotFound
