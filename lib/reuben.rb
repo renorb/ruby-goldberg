@@ -1,6 +1,3 @@
-# require 'redis'
-require 'memcached'
-
 module Rack
   class Reuben
 
@@ -25,6 +22,3 @@ module Rack
     
   end
 end
-
-use Rack::ShowExceptions
-run Rack::Reuben.new
