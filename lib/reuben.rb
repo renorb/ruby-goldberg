@@ -6,22 +6,22 @@ module Rack
 
     # ==== Parameters
     # store: Class name which will be instantiated with +store_config+
-    #        passed to the initializer. Defaults to Memcached
+    #        passed to the initializer.
     #
     # store_config: Parameters passed to +store+'s
-    #               initializer. Defaults to 'localhost:11211'
+    #               initializer. Optional.
     #
-    def initialize(store = nil, store_config = "localhost:11211")
-      unless store
-        require 'memcached'
-        store = Memcached
+    def initialize(store, store_config = nil)
+
+      if store_config
+        @cache = store.new(store_config)
+      else
+        @cache = store.new
       end
 
-      @cache = store.new(store_config) # setup key-value store connection
+      key = @cache.get "keys" # see if keys array is set
 
-      begin
-        @cache.get "keys" # see if keys array is set
-      rescue Memcached::NotFound
+      unless key
         @cache.set "keys", [] # reset key array to empty array
       end
     end
@@ -55,10 +55,11 @@ module Rack
     end
 
     get "/check" do # "/check?test" will check if client named 'test' is registered
-      begin
-        result = @cache.get "#{request.GET}_name"
+      result = @cache.get "#{request.GET}_name"
+
+      if result
         "#{request.GET} is registered!!"
-      rescue Memcached::NotFound
+      else
         "#{request.GET} not found"
       end
     end
