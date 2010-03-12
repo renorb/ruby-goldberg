@@ -1,3 +1,6 @@
+# require 'redis'
+require 'memcached'
+
 module Rack
   class Reuben
 
