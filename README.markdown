@@ -1,4 +1,4 @@
-== Ruby Goldberg
+## Ruby Goldberg
 
 A reason to create lots of pointless Ruby-based projects talkin' trash on 
 the tubez.
@@ -6,7 +6,7 @@ the tubez.
 
 Ruby Goldberg is composed of two parts.
 
-=== Reuben
+### Reuben
 
 The Ruby Goldberg server (reuben) is responsible for registering clients (rubes). The 
 registration is a simple POST to with two parameters: the rubes's home
@@ -22,7 +22,7 @@ keeping track of where a package has been and where it's going next.
   - Checks if the rubes are still alive (before sending package)
   - Returns package to the requestor
 
-=== Rubes
+### Rubes
 
 Ruby Goldberg clients (rubes) are arbitrarily complex web services spread all 
 throughout the tubes. They start by telling the Reuben their name (name), where 
@@ -36,7 +36,7 @@ The knock_knock url should respond with:
 
   200 OK "Who's there?"
 
-=== Package
+### Package
 
 The package is a simple JSON structure that looks like this:
 
