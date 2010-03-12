@@ -29,6 +29,13 @@ module Rack
         else
           "fail"
         end
+      when "/check" # "/check?test" will check if client named 'test' is registered
+        begin
+          result = @cache.get "#{request.GET}_name"
+          "#{request.GET} is registered!"
+        rescue Memcached::NotFound
+          "#{request.GET} not found"
+        end
       else
         "Unknown"
       end
