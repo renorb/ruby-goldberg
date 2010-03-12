@@ -26,11 +26,6 @@ module Rack
       end
     end
 
-    get "/rubes" do # get list of registered rube's
-      keys = @cache.get "keys"
-      "rubes: #{keys}"
-    end
-
     get "/" do # not sure what root should return
       erb :index
     end
