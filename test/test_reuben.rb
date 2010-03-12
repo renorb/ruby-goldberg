@@ -2,7 +2,7 @@ require "rubygems"
 require "test/unit"
 require "rack/test"
 
-require File.dirname(__FILE__) + "/../lib/reuben"
+require 'reuben'
 
 
 class TestReuben < Test::Unit::TestCase
