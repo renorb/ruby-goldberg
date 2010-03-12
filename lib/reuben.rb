@@ -37,16 +37,14 @@ module Rack
     post "/rubeme" do # register a rube client
       name   = params["name"]
       rube   = params["rube"]
-      health = params["health"]
 
       @cache.set "#{name}_name", name
       @cache.set "#{name}_rube", rube
-      @cache.set "#{name}_health", health
 
       keys = @cache.get "keys"
       keys << name
       @cache.set "keys", keys
-      "registered name:#{name} rube url:#{rube} health url:#{health}"
+      "registered name:#{name} rube url:#{rube}"
     end
 
     get "/rubes" do # get list of registered rube's

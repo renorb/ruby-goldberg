@@ -23,11 +23,10 @@ class TestReuben < Test::Unit::TestCase
   end
 
   def test_rubeme_can_accept_client_params
-    post "/rubeme", {:name => "test_rube", :rube => "http://example.com/rube", :health => "http://example.com/knock_knock"}
+    post "/rubeme", {:name => "test_rube", :rube => "http://example.com/rube"}
     # "registered name:#{name} rube url:#{rube} health url:#{health}"
     assert_match /test_rube/, last_response.body
     assert_match /http:\/\/example.com\/rube/, last_response.body
-    assert_match /http:\/\/example.com\/knock_knock/, last_response.body
   end
 
   def test_check_url_responds
