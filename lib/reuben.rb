@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'erb'
+require 'json'
 
 module Rack
   class Reuben < Sinatra::Base
@@ -20,7 +21,7 @@ module Rack
       end
 
       unless @cache.get "keys"
-        @cache.set "keys", [] # reset key array to empty array
+        @cache.set "keys", [].to_json # reset key array to empty array
       end
     end
 
@@ -41,9 +42,9 @@ module Rack
       @cache.set "#{name}_desc", desc
       @cache.set "#{name}_url", url
 
-      keys = @cache.get "keys"
+      keys = JSON.parse(@cache.get("keys"))
       keys << name
-      @cache.set "keys", keys
+      @cache.set "keys", keys.to_json
       "registered name:#{name} url:#{url} desc:#{desc}"
     end
 
