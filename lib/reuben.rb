@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'digest/md5'
 require 'erb'
 require 'json'
+require 'curb'
 
 module Rack
   class Reuben < Sinatra::Base
@@ -31,7 +32,11 @@ module Rack
     end
 
     post "/" do # kick off
-      # process posted text - pass it to a random rube
+      package = params["package"]
+      pkg_key = Digest::MD5.hexdigest(package + Time.now.to_s)
+      @cache.set pkg_key, get_random_rube_list
+      # curb out first rube
+      "kicked off rube process"
     end
 
     post "/rubeme" do # register a rube client
@@ -65,5 +70,12 @@ module Rack
       end
     end
 
+    private
+    
+    def get_random_rube_list
+      # FIXME - needs some random selection/ordering
+      JSON.parse(@cache.get "keys")
+    end
+    
   end
 end
