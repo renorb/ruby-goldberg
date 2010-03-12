@@ -1,4 +1,3 @@
-# require 'redis'
 require 'memcached'
 
 module Rack
@@ -13,6 +12,7 @@ module Rack
       
       out = case request.path
       when "/" # not sure what root should return
+        
         "Nothing Here"
       when "/rubeme" # register a rube client
         if request.post?
