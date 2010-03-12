@@ -1,16 +1,10 @@
-require "rubygems"
-require "test/unit"
-require "rack/test"
-
-require 'reuben'
-require 'reuben/adapters/memcached_adapter'
-
+require 'helper'
 
 class TestReuben < Test::Unit::TestCase
   include Rack::Test::Methods
 
   def app
-    Rack::Reuben.new Reuben::Adapters::MemcachedAdapter, 'localhost:11211'
+    Rack::Reuben.new TestAdapter
   end
 
   def test_root_url_responds
