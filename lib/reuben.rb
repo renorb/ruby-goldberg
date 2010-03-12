@@ -37,7 +37,7 @@ module Rack
           "#{request.GET} not found"
         end
       else
-        "Unknown"
+        "Unknown Request"
       end
       
       return [200, {'Content-type' => 'text/plain'}, out]
