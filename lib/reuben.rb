@@ -3,6 +3,7 @@ require 'digest/md5'
 require 'erb'
 require 'json'
 require 'curb'
+require 'rube'
 
 module Rack
   class Reuben < Sinatra::Base
@@ -34,25 +35,36 @@ module Rack
     post "/" do # kick off
       package = params["package"]
       pkg_key = Digest::MD5.hexdigest(package + Time.now.to_s)
-      @cache.set pkg_key, get_random_rube_list
-      # curb out first rube
-      "kicked off rube process"
+      list = get_random_rube_list
+      @cache.set pkg_key, list
+      # verify rube url is up
+      c = Curl::Easy.perform(rube_url)
+      if c.response_code == 200
+        # post to first rube
+        c = Curl::Easy.http_post(rube_url,
+                                 Curl::PostField.content('package', package),
+                                 Curl::PostField.content('next_url', next_url))
+        "kicked off #{package}"
+      else
+      end
     end
 
     post "/rubeme" do # register a rube client
-      name = params["name"]
-      desc = params["desc"]
-      url  = params["url"]
-      md5  = Digest::MD5.hexdigest(url)
+      # name = params["name"]
+      # desc = params["desc"]
+      # url  = params["url"]
+      # md5  = Digest::MD5.hexdigest(url)
+      rube = Rube.init(params)
 
-      @cache.set "#{md5}_name", name
-      @cache.set "#{md5}_desc", desc
-      @cache.set "#{md5}_url", url
+      # @cache.set "#{md5}_name", rube.name
+      # @cache.set "#{md5}_desc", rube.desc
+      # @cache.set "#{md5}_url", rube.url
+      rube.store(@cache)
 
       keys = JSON.parse(@cache.get("keys"))
-      keys << md5
+      keys << rube.md5
       @cache.set "keys", keys.to_json
-      "registered name:#{name} key:#{md5} url:#{url} desc:#{desc}"
+      "registered name:#{rube.name} key:#{rube.md5} url:#{rube.url} desc:#{rube.desc}"
     end
 
     get "/rubes" do # get list of registered rube's
