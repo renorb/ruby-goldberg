@@ -40,25 +40,17 @@ module Rack
       # verify rube url is up
       c = Curl::Easy.perform(rube_url)
       if c.response_code == 200
-        # post to first rube
         c = Curl::Easy.http_post(rube_url,
                                  Curl::PostField.content('package', package),
                                  Curl::PostField.content('next_url', next_url))
         "kicked off #{package}"
       else
+        "rube #{rube_url} is down"
       end
     end
 
     post "/rubeme" do # register a rube client
-      # name = params["name"]
-      # desc = params["desc"]
-      # url  = params["url"]
-      # md5  = Digest::MD5.hexdigest(url)
       rube = Rube.init(params)
-
-      # @cache.set "#{md5}_name", rube.name
-      # @cache.set "#{md5}_desc", rube.desc
-      # @cache.set "#{md5}_url", rube.url
       rube.store(@cache)
 
       keys = JSON.parse(@cache.get("keys"))
