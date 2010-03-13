@@ -4,7 +4,7 @@ class TestReuben < Test::Unit::TestCase
   include Rack::Test::Methods
 
   def app
-    Rack::Reuben.new TestAdapter
+    RG::Reuben.new TestAdapter
   end
 
   def test_root_url_responds

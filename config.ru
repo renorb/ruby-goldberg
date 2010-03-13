@@ -4,4 +4,4 @@ require 'reuben'
 require 'reuben/adapters/memcached_adapter'
 
 use Rack::ShowExceptions
-run Rack::Reuben.new Reuben::Adapters::MemcachedAdapter, 'localhost:11211'
+run RG::Reuben.new Reuben::Adapters::MemcachedAdapter, 'localhost:11211'

@@ -2,6 +2,7 @@ require 'rubygems'
 require 'test/unit'
 require 'rack/test'
 
+require 'rube'
 require 'reuben'
 require 'reuben/adapters/abstract_adapter'
 

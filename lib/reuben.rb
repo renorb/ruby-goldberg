@@ -5,7 +5,7 @@ require 'json'
 require 'curb'
 require 'rube'
 
-module Rack
+module RG
   class Reuben < Sinatra::Base
 
     # ==== Parameters
