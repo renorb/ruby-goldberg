@@ -1,7 +1,7 @@
 $:.unshift(File.dirname(__FILE__) + '/lib')
 
 require 'reuben'
-require 'reuben/adapters/memcached_adapter'
+require 'store/adapters'
 
 use Rack::ShowExceptions
-run RG::Reuben.new Reuben::Adapters::MemcachedAdapter, 'localhost:11211'
+run RG::Reuben.new RG::Store::Adapters::MemcachedAdapter, 'localhost:11211'

@@ -8,20 +8,18 @@ require 'rube'
 module RG
   class Reuben < Sinatra::Base
 
+    attr_accessor :data_store
+    
     # ==== Parameters
-    # store: Class name which will be instantiated with +store_config+
-    #        passed to the initializer.
+    # store<Symbol>: name of the backend we want to use for the store. DataStore
+    #                defaults to memory. Optional.
     #
     # store_config: Parameters passed to +store+'s
     #               initializer. Optional.
     #
-    def initialize(store, store_config = nil)
+    def initialize(store = nil, store_config = nil)
 
-      if store_config
-        @cache = store.new(store_config)
-      else
-        @cache = store.new
-      end
+      @cache = DataStore.new(store, store_config)
 
       unless @cache.get "keys"
         @cache.set "keys", [].to_json # reset key array to empty array
