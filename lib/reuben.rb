@@ -19,13 +19,13 @@ module RG
     def initialize(store = nil, store_config = nil)
       @store = DataStore.new(store, store_config)
       Reuben.store = @store
-      
+
       unless @store.get "keys"
         @store.set "keys", [].to_json # reset key array to empty array
       end
     end
 
-    
+
     get "/" do # not sure what root should return
       erb :index
     end
@@ -73,11 +73,11 @@ module RG
     end
 
     private
-    
+
     def get_random_rube_list
       # FIXME - needs some random selection/ordering
       JSON.parse(@store.get "keys")
     end
-    
+
   end
 end
